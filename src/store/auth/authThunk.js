@@ -23,7 +23,7 @@ export const loginQuery = createAsyncThunk(
             'Информация',
             'Вы вошли в аккаунт',
             'Ошибка',
-            axiosInstance.post('/auth/signIn', userData)
+            axiosInstance.post('/auth/login', userData)
          )
 
          if (isRememberMeChecked) {
@@ -48,7 +48,7 @@ export const registerQuery = createAsyncThunk(
             'Информация',
             'Вы зарегистрированы',
             'Ошибка',
-            axiosInstance.post('/auth/signUp', userData)
+            axiosInstance.post('/auth/registration', userData)
          )
          localStorage.setItem(USER_KEY, JSON.stringify(response.data))
          return dispatch(login({ data: response.data, navigate }))

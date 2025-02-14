@@ -48,8 +48,7 @@ export const SignUp = () => {
       dispatch(
          registerQuery({
             userData: {
-               firstName: values.firstName,
-               lastName: values.lastName,
+               fullName: `${values.firstName} ${values.lastName}`,
                email: values.email,
                password: values.password,
                isAgree: isAgreeState,

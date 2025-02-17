@@ -1,5 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box, Typography, styled } from '@mui/material'
+import { GoogleLogin } from '@react-oauth/google'
+import { jwtDecode } from 'jwt-decode'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
@@ -71,6 +73,8 @@ export const SignIn = () => {
    ] = useState(false)
 
    const onSignInWithGoogleHandler = () => {
+      console.log('onSignInWithGoogleHandler')
+
       dispatch(authWithGoogle({ navigate, isRememberMeChecked }))
    }
 
@@ -133,6 +137,14 @@ export const SignIn = () => {
                   <ContinueWithGoogle />
                   Продолжить с Google
                </ContinueWithGoogleButton>
+               <GoogleLogin
+                  onSuccess={(credentialResponse) => {
+                     console.log(jwtDecode(credentialResponse.credential))
+                  }}
+                  onError={(error) => {
+                     console.log('login error', error)
+                  }}
+               />
                <SignUpLink>
                   Нет аккаунта?
                   <Link to={`/main-page/${routes.REGISTRATION}`}>

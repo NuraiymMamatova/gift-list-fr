@@ -1,5 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box, Typography, styled } from '@mui/material'
+import { useGoogleLogin } from '@react-oauth/google'
+import axios from 'axios'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
@@ -57,11 +59,6 @@ export const SignUp = () => {
          })
       )
    }
-
-   const onSingUpWithGoogleHandler = () => {
-      dispatch(authWithGoogle({ navigate }))
-   }
-
    // passwords state
 
    const [
@@ -78,7 +75,31 @@ export const SignUp = () => {
          return newState
       })
    }
+   const login = useGoogleLogin({
+      onSuccess: async (tokenResponse) => {
+         const userInfo = await axios.get(
+            'https://www.googleapis.com/oauth2/v3/userinfo',
+            {
+               headers: {
+                  Authorization: `Bearer ${tokenResponse.access_token}`,
+               },
+            }
+         )
 
+         const result = userInfo.data
+         dispatch(
+            authWithGoogle({
+               navigate,
+               userData: {
+                  email: result.email,
+                  fullName: result.name,
+                  picture: result.picture,
+               },
+            })
+         )
+         // contains name, email & googleId(sub)
+      },
+   })
    return (
       <Modal isOpen={isSignUpModalOpen} handleClose={closeModalHandler}>
          <MainContainer component="div">
@@ -179,7 +200,7 @@ export const SignUp = () => {
                   <p>или</p>
                   <Line component="div" />
                </OrContainer>
-               <ContinueWithGoogleButton onClick={onSingUpWithGoogleHandler}>
+               <ContinueWithGoogleButton onClick={login}>
                   <ContinueWithGoogle />
                   Продолжить с Google
                </ContinueWithGoogleButton>

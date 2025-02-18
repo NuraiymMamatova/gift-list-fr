@@ -1,7 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { axiosInstance } from '../../config/axiosInstance'
-import { auth } from '../../config/firebase'
 import { USER_KEY, USER_TOKEN_KEY } from '../../utils/constants'
 import {
    notifyTypes,
@@ -106,29 +104,25 @@ export const changePasswordQuery = createAsyncThunk(
 
 export const authWithGoogle = createAsyncThunk(
    'sign-in-with-google',
-   async ({ navigate, isRememberMeChecked }, { rejectWithValue, dispatch }) => {
-      const provider = new GoogleAuthProvider()
+   async (
+      { navigate, isRememberMeChecked, userData },
+      { rejectWithValue, dispatch }
+   ) => {
       try {
-         const response = await signInWithPopup(auth, provider)
-         const secondResponse = await axiosInstance.post(
-            `/auth/auth-google?tokenId=${response.user.accessToken}`
-         )
+         const response = await axiosInstance.post(`/auth/viaGoogle`, userData)
          toastWithoutPromise(
             notifyTypes.NOTIFY_TYPE_SUCCESS_SUCCESS,
             'Информация',
             'Вы авторизовались'
          )
          if (isRememberMeChecked) {
-            localStorage.setItem(USER_KEY, JSON.stringify(secondResponse.data))
+            localStorage.setItem(USER_KEY, JSON.stringify(response.data))
          } else {
-            sessionStorage.setItem(
-               USER_KEY,
-               JSON.stringify(secondResponse.data)
-            )
+            sessionStorage.setItem(USER_KEY, JSON.stringify(response.data))
          }
          return dispatch(
             login({
-               data: secondResponse.data,
+               data: response.data,
                navigate,
             })
          )

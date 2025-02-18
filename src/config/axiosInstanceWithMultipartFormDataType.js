@@ -2,14 +2,12 @@ import axios from 'axios'
 import { store } from '../store'
 import { logout } from '../store/auth/authSlice'
 
-export const BASE_URL = 'http://192.168.127.247:8080/'
-
 const headers = {
    'Content-type': 'multipart/form-data',
 }
 
 export const axiosInstanceMultiPartFormData = axios.create({
-   baseURL: BASE_URL,
+   baseURL: process.env.REACT_APP_BASE_SERVER_URL,
    headers,
 })
 

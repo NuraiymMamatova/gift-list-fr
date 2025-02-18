@@ -1,14 +1,13 @@
 import axios from 'axios'
 import { store } from '../store'
 import { logout } from '../store/auth/authSlice'
-import { BASE_URL } from './axiosInstanceWithMultipartFormDataType'
 
 const headers = {
    'Content-type': 'application/json',
 }
 
 export const axiosInstance = axios.create({
-   baseURL: BASE_URL,
+   baseURL: process.env.REACT_APP_BASE_SERVER_URL,
    headers,
 })
 

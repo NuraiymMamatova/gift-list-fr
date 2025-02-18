@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box, Typography, styled } from '@mui/material'
-import { GoogleLogin } from '@react-oauth/google'
-import { jwtDecode } from 'jwt-decode'
+import { useGoogleLogin } from '@react-oauth/google'
+import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
@@ -72,11 +72,32 @@ export const SignIn = () => {
       setVisibleAndInvisiblePasswordState,
    ] = useState(false)
 
-   const onSignInWithGoogleHandler = () => {
-      console.log('onSignInWithGoogleHandler')
+   const onSignInWithGoogleHandler = useGoogleLogin({
+      onSuccess: async (tokenResponse) => {
+         const userInfo = await axios.get(
+            'https://www.googleapis.com/oauth2/v3/userinfo',
+            {
+               headers: {
+                  Authorization: `Bearer ${tokenResponse.access_token}`,
+               },
+            }
+         )
 
-      dispatch(authWithGoogle({ navigate, isRememberMeChecked }))
-   }
+         const result = userInfo.data
+         dispatch(
+            authWithGoogle({
+               isRememberMeChecked,
+               navigate,
+               userData: {
+                  email: result.email,
+                  fullName: result.name,
+                  picture: result.picture,
+               },
+            })
+         )
+         // contains name, email & googleId(sub)
+      },
+   })
 
    const changePasswordVisibleInvisibleStateHandler = () => {
       setVisibleAndInvisiblePasswordState((prevState) => !prevState)
@@ -137,14 +158,6 @@ export const SignIn = () => {
                   <ContinueWithGoogle />
                   Продолжить с Google
                </ContinueWithGoogleButton>
-               <GoogleLogin
-                  onSuccess={(credentialResponse) => {
-                     console.log(jwtDecode(credentialResponse.credential))
-                  }}
-                  onError={(error) => {
-                     console.log('login error', error)
-                  }}
-               />
                <SignUpLink>
                   Нет аккаунта?
                   <Link to={`/main-page/${routes.REGISTRATION}`}>

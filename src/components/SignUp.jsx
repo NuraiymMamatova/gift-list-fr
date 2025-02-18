@@ -75,7 +75,7 @@ export const SignUp = () => {
          return newState
       })
    }
-   const login = useGoogleLogin({
+   const onSignInWithGoogleHandler = useGoogleLogin({
       onSuccess: async (tokenResponse) => {
          const userInfo = await axios.get(
             'https://www.googleapis.com/oauth2/v3/userinfo',
@@ -85,7 +85,6 @@ export const SignUp = () => {
                },
             }
          )
-
          const result = userInfo.data
          dispatch(
             authWithGoogle({
@@ -200,7 +199,7 @@ export const SignUp = () => {
                   <p>или</p>
                   <Line component="div" />
                </OrContainer>
-               <ContinueWithGoogleButton onClick={login}>
+               <ContinueWithGoogleButton onClick={onSignInWithGoogleHandler}>
                   <ContinueWithGoogle />
                   Продолжить с Google
                </ContinueWithGoogleButton>

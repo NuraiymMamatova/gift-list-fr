@@ -87,13 +87,7 @@ export const changePasswordQuery = createAsyncThunk(
             'Информация',
             'Пароль успешно изменен',
             'Ошибка',
-            axiosInstance.put('/auth/changePassword', userData, {
-               headers: {
-                  Authorization: `Bearer ${localStorage.getItem(
-                     USER_TOKEN_KEY
-                  )}`,
-               },
-            })
+            axiosInstance.put('/auth/changePassword', userData)
          )
          return navigate('/main-page/login')
       } catch (error) {

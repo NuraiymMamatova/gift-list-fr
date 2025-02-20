@@ -7,7 +7,7 @@ export const routes = {
    LOGIN: 'login',
    REGISTRATION: 'registration',
    FORGOTPASSWORD: 'forgot-password',
-   RESETPASSWORD: 'reset-password',
+   RESETPASSWORD: 'reset-password/:email',
    ADMIN: {
       path: '/admin',
       users: {

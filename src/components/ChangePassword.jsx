@@ -3,7 +3,7 @@ import { Box, Typography, styled } from '@mui/material'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { CloseModalIcon, EyeClose, EyeOpen } from '../assets'
 import { changePasswordQuery } from '../store/auth/authThunk'
 import {
@@ -28,6 +28,8 @@ export const ChangePassword = ({ variant, handleClose }) => {
       ),
    })
 
+   const { email } = useParams()
+
    const dispatch = useDispatch()
 
    const navigate = useNavigate()
@@ -40,7 +42,7 @@ export const ChangePassword = ({ variant, handleClose }) => {
          navigate('/main-page')
       }
       setIsResetPasswordModalOpen(false)
-      handleClose()
+      if (handleClose) handleClose()
    }
 
    const onSubmit = (value) => {
@@ -49,7 +51,7 @@ export const ChangePassword = ({ variant, handleClose }) => {
             changePasswordQuery({
                userData: {
                   newPassword: value.newPassword,
-                  verifyPassword: value.confirmPassword,
+                  email,
                },
                navigate,
             })
@@ -60,7 +62,7 @@ export const ChangePassword = ({ variant, handleClose }) => {
                userData: {
                   oldPassword: value.oldPassword,
                   newPassword: value.newPassword,
-                  repeatPassword: value.confirmPassword,
+                  email,
                },
                onClose: closeModalHandler,
             })

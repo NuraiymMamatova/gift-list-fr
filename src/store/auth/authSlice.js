@@ -42,7 +42,6 @@ export const authSlice = createSlice({
             role: state.role,
             token: state.token,
          }
-         console.log(state, payload)
          if (localStorage.getItem(USER_KEY)) localStorage.setItem(newUserData)
          if (sessionStorage.getItem(USER_KEY))
             sessionStorage.setItem(newUserData)

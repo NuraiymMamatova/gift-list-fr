@@ -48,8 +48,7 @@ export const updateProfileThunk = createAsyncThunk(
          } = values
 
          const updatedProfile = {
-            firstName: name,
-            lastName: surname,
+            fullName: `${name} ${surname}`,
             phoneNumber,
          }
 
@@ -58,12 +57,12 @@ export const updateProfileThunk = createAsyncThunk(
          if (image) updatedProfile.image = image
          if (clothingSize) updatedProfile.clothingSize = clothingSize
          if (shoeSize) updatedProfile.shoeSize = shoeSizeEnum[shoeSize]
-         if (hobbies) updatedProfile.hobby = hobbies
-         if (importantToKnow) updatedProfile.important = importantToKnow
-         if (facebookLink) updatedProfile.linkFacebook = facebookLink
-         if (vkLink) updatedProfile.vkontakte = vkLink
-         if (instagramLink) updatedProfile.instagram = instagramLink
-         if (telegramLink) updatedProfile.telegram = telegramLink
+         if (hobbies) updatedProfile.hobbies = hobbies
+         if (importantToKnow) updatedProfile.importantToKnow = importantToKnow
+         if (facebookLink) updatedProfile.facebookLink = facebookLink
+         if (vkLink) updatedProfile.vkLink = vkLink
+         if (instagramLink) updatedProfile.instagramLink = instagramLink
+         if (telegramLink) updatedProfile.telegramLink = telegramLink
 
          const response = await toastWithPromise(
             notifyTypes.NOTIFY_TYPE_ERROR_WARNING,
@@ -71,7 +70,7 @@ export const updateProfileThunk = createAsyncThunk(
             'Успешно',
             'Профиль успешно обновлен.',
             'Ошибка',
-            axiosInstance.put('/user', updatedProfile)
+            axiosInstance.put('/user/update', updatedProfile)
          )
          dispatch(getProfileThunk())
          dispatch(changeUserData({ fullName: `${name} ${surname}`, image }))

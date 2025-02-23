@@ -18,12 +18,12 @@ export const UpdateUserProfilePage = () => {
       image,
       clothingSize,
       shoeSize,
-      hobby,
-      important,
-      linkFacebook,
-      vkontakte,
-      instagram,
-      telegram,
+      hobbies,
+      importantToKnow,
+      facebookLink,
+      vkLink,
+      instagramLink,
+      telegramLink,
       email,
    } = useSelector((state) => state.profile.profile)
    const dispatch = useDispatch()
@@ -41,12 +41,12 @@ export const UpdateUserProfilePage = () => {
       image,
       clothingSize,
       shoeSize: shoeSizeObject[shoeSize],
-      hobbies: hobby,
-      importantToKnow: important,
-      facebookLink: linkFacebook,
-      vkLink: vkontakte,
-      instagramLink: instagram,
-      telegramLink: telegram,
+      hobbies,
+      importantToKnow,
+      facebookLink,
+      vkLink,
+      instagramLink,
+      telegramLink,
    }
    const navigate = useNavigate()
 

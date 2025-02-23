@@ -28,8 +28,6 @@ export const UserProfilePage = () => {
 
    const toggleEditPasswordModalOpen = () =>
       setIsEditPasswordModalOpen((prev) => !prev)
-   const firstName = profile.fullName?.match(/[A-Z][a-z]*/)[0]
-   const lastName = profile.fullName?.replace(firstName, '')
    if (error) {
       if (error.includes('403')) {
          return 'Ошибка 403. Доступ запрещен.'
@@ -49,16 +47,16 @@ export const UserProfilePage = () => {
             clothSize={profile.clothingSize}
             email={profile.email}
             city={englishCountries[profile.country]}
-            userName={`${firstName} ${lastName}`}
-            facebook={profile.linkFacebook}
+            fullName={profile.fullName}
+            facebook={profile.facebookLink}
             phoneNumber={profile.phoneNumber}
-            importantToKnow={profile.important}
+            importantToKnow={profile.importantToKnow}
             shoesSize={shoeSizeObject[profile.shoeSize]}
-            telegram={profile.telegram}
-            vk={profile.vkontakte}
-            interesAndHobbies={profile.hobby}
+            telegram={profile.telegramLink}
+            vk={profile.vkLink}
+            interesAndHobbies={profile.hobbies}
             image={profile.image}
-            instagram={profile.instagram}
+            instagram={profile.instagramLink}
             onClickFirstButton={onEditProfile}
             onClickSecondButton={toggleEditPasswordModalOpen}
          />

@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Box, Typography, styled } from '@mui/material'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { CloseModalIcon, EyeClose, EyeOpen } from '../assets'
 import { changePasswordQuery } from '../store/auth/authThunk'
@@ -13,7 +13,6 @@ import {
 import { Modal } from './Modal'
 import { Button } from './UI/Button'
 import { Input } from './UI/input/Input'
-import { changePasswordThunk } from '../store/profile/profileThunk'
 
 export const ChangePassword = ({ variant, handleClose }) => {
    const {
@@ -45,24 +44,29 @@ export const ChangePassword = ({ variant, handleClose }) => {
       if (handleClose) handleClose()
    }
 
+   const emailFromStorage = useSelector((state) => state.authLogin.email)
+
    const onSubmit = (value) => {
       if (!variant) {
          dispatch(
             changePasswordQuery({
                userData: {
                   newPassword: value.newPassword,
-                  email,
+                  email: email || emailFromStorage,
+                  hasPassword: !email,
                },
                navigate,
+               handleClose,
             })
          )
       } else {
          dispatch(
-            changePasswordThunk({
+            changePasswordQuery({
                userData: {
                   oldPassword: value.oldPassword,
                   newPassword: value.newPassword,
-                  email,
+                  email: emailFromStorage,
+                  hasPassword: variant,
                },
                onClose: closeModalHandler,
             })
@@ -99,7 +103,7 @@ export const ChangePassword = ({ variant, handleClose }) => {
                onSubmit={handleSubmit(onSubmit)}
             >
                <FormTitleAndCloseIcon>
-                  <FormTitle variant="h4">Смена пароля</FormTitle>
+                  <FormTitle variant="h4">Сыр сөздү өзгөртүү</FormTitle>
                   <StyledCloseModalIcon onClick={closeModalHandler} />
                </FormTitleAndCloseIcon>
                {variant && (
@@ -109,7 +113,7 @@ export const ChangePassword = ({ variant, handleClose }) => {
                            ? 'text'
                            : 'password'
                      }
-                     placeholder="Введите старый пароль"
+                     placeholder="Эски сыр сөзүңүздү киргизиңиз                                                                                                            "
                      {...register('oldPassword')}
                      helperText={errors.oldPassword?.message}
                      error={Boolean(errors.oldPassword)}
@@ -141,7 +145,7 @@ export const ChangePassword = ({ variant, handleClose }) => {
                         ? 'text'
                         : 'password'
                   }
-                  placeholder="Введите новый пароль"
+                  placeholder="Жаңы сыр сөзүңүздү киргизиңиз"
                   {...register('newPassword')}
                   helperText={errors.newPassword?.message}
                   error={Boolean(errors.newPassword)}
@@ -172,7 +176,7 @@ export const ChangePassword = ({ variant, handleClose }) => {
                         ? 'text'
                         : 'password'
                   }
-                  placeholder="Повторите пароль"
+                  placeholder="Жаңы сыр сөзүңүздү кайталап киргизиңиз"
                   {...register('confirmPassword')}
                   helperText={errors.confirmPassword?.message}
                   error={Boolean(errors.confirmPassword)}
@@ -198,7 +202,7 @@ export const ChangePassword = ({ variant, handleClose }) => {
                   }}
                />
                <StyledConfirmButton variant="primary" type="submit">
-                  Подтвердить
+                  Тастыктоо
                </StyledConfirmButton>
             </ResetPasswordForm>
          </MainContainer>

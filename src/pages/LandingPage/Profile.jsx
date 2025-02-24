@@ -8,6 +8,16 @@ import {
 } from '../../assets/index'
 import { Button } from '../../components/UI/Button'
 
+const changeOrCreatePassword = (onClick, hasPassword) => {
+   return (
+      <StyledButton onClick={onClick} variant="outlined">
+         {hasPassword === 'change'
+            ? 'Сыр сөздү өзгөртүү'
+            : 'Жаңы сыр жөз киргизүү'}
+      </StyledButton>
+   )
+}
+
 export const Profile = ({
    variant,
    image,
@@ -19,6 +29,7 @@ export const Profile = ({
    vk,
    city,
    email,
+   hasPassword,
    shoesSize,
    clothSize,
    interesAndHobbies,
@@ -48,14 +59,12 @@ export const Profile = ({
                                  variant="primary"
                                  onClick={onClickFirstButton}
                               >
-                                 Расскажите о себе
+                                 Өзүңүз жөнүндө айтып бериңиз
                               </StyledButton>
-                              <StyledButton
-                                 onClick={onClickSecondButton}
-                                 variant="outlined"
-                              >
-                                 Сменить пароль
-                              </StyledButton>
+                              {changeOrCreatePassword(
+                                 onClickSecondButton,
+                                 hasPassword
+                              )}
                            </ApplicationToFriendsContainer>
                         )
                      case 'myProfile':
@@ -65,14 +74,12 @@ export const Profile = ({
                                  variant="primary"
                                  onClick={onClickFirstButton}
                               >
-                                 Редактировать
+                                 Өзгөртүү
                               </StyledButton>
-                              <StyledButton
-                                 onClick={onClickSecondButton}
-                                 variant="outlined"
-                              >
-                                 Сменить пароль
-                              </StyledButton>
+                              {changeOrCreatePassword(
+                                 onClickSecondButton,
+                                 hasPassword
+                              )}
                            </ApplicationToFriendsContainer>
                         )
                      case 'applicationToFriends':
@@ -82,26 +89,26 @@ export const Profile = ({
                                  variant="primary"
                                  onClick={onAcceptFriend}
                               >
-                                 Принять заявку
+                                 Чакырууну кабыл алуу
                               </StyledButton>
                               <StyledButton
                                  variant="outlined"
                                  onClick={onRejectFriend}
                               >
-                                 Отклонить
+                                 Кабыл албоо
                               </StyledButton>
                            </ApplicationToFriendsContainer>
                         )
                      case 'removeFromFriends':
                         return (
                            <StyledButton variant="outlined" onClick={onDelete}>
-                              Удалить из друзей
+                              Достордон чыгаруу
                            </StyledButton>
                         )
                      default:
                         return (
                            <StyledButton variant="primary" onClick={onClick}>
-                              Добавить в друзья
+                              Досторго кошуу
                            </StyledButton>
                         )
                   }
@@ -132,24 +139,26 @@ export const Profile = ({
 
          <UserInfoContainer component="div">
             {/* basic information */}
-            <InformationText>Основная информация</InformationText>
+            <InformationText>Негизги маалымат</InformationText>
             <StyledContentWrapper>
                <StyledBlockOne>
                   <UserInformationAreaBlockOne>
-                     Город: <StyledContent>{city}</StyledContent>
+                     Шаар: <StyledContent>{city}</StyledContent>
                   </UserInformationAreaBlockOne>
                   <UserInformationAreaBlockOne>
-                     Email: <StyledContent>{email}</StyledContent>
+                     Электрондук почта: <StyledContent>{email}</StyledContent>
                   </UserInformationAreaBlockOne>
                   <div>
-                     <InformationText>Интересы, хобби</InformationText>
+                     <InformationText>
+                        Кызыкчылыктары, хоббилери
+                     </InformationText>
                      <UserInformationAreaBlockOne>
-                        Интересы,хобби:
+                        Кызыкчылыктары, хоббилери:
                         <StyledContent>{interesAndHobbies}</StyledContent>
                      </UserInformationAreaBlockOne>
                   </div>
                   <div>
-                     <InformationText>Доп. инфа</InformationText>
+                     <InformationText>Кошумча маалымат</InformationText>
                      <UserInformationAreaBlockOne>
                         Размер одежды:
                         <StyledContent>{clothSize}</StyledContent>
@@ -158,15 +167,15 @@ export const Profile = ({
                </StyledBlockOne>
                <StyledBlockTwo>
                   <UserInformationAreaBlockOne>
-                     Дата рождения:
+                     Туулган күнү:
                      <StyledContent>{birthdate}</StyledContent>
                   </UserInformationAreaBlockOne>
                   <UserInformationAreaBlockOne>
-                     Номер телефона:
+                     Телефон номуру:
                      <StyledContent>{phoneNumber}</StyledContent>
                   </UserInformationAreaBlockOne>
                   <UserInformationAreaBlockTwo className="important">
-                     Важно знать:
+                     Билген зарыл:
                      <StyledContent>{importantToKnow}</StyledContent>
                   </UserInformationAreaBlockTwo>
                   <UserInformationAreaBlockTwo>
@@ -177,7 +186,7 @@ export const Profile = ({
             </StyledContentWrapper>
             {variant === 'roleAdmin' && (
                <RemoveOrBlockContainer component="div">
-                  <RemoveButton variant="outlined">Удалить</RemoveButton>
+                  <RemoveButton variant="outlined">Өчүрүү </RemoveButton>
                   <StyledButton variant="primary">Заблокировать</StyledButton>
                </RemoveOrBlockContainer>
             )}

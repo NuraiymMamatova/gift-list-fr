@@ -63,7 +63,8 @@ export const UserProfilePage = () => {
          />
          {isEditPasswordModalOpen && (
             <ChangePassword
-               variant={profile.hasPassword}
+               hasPassword={profile.hasPassword}
+               variant="createOrUpdate"
                handleClose={toggleEditPasswordModalOpen}
             />
          )}

@@ -14,7 +14,7 @@ import { Modal } from './Modal'
 import { Button } from './UI/Button'
 import { Input } from './UI/input/Input'
 
-export const ChangePassword = ({ variant, handleClose }) => {
+export const ChangePassword = ({ variant, handleClose, hasPassword }) => {
    const {
       register,
       handleSubmit,
@@ -37,23 +37,27 @@ export const ChangePassword = ({ variant, handleClose }) => {
       useState(true)
 
    const closeModalHandler = () => {
-      if (!variant) {
+      console.log('closeModalHandler')
+      if (variant !== 'createOrUpdate') {
          navigate('/main-page')
       }
       setIsResetPasswordModalOpen(false)
       if (handleClose) handleClose()
    }
 
-   const emailFromStorage = useSelector((state) => state.authLogin.email)
-
+   const emailFromStore = useSelector((state) => state.authLogin.email)
+   console.log(variant)
+   console.log(hasPassword)
    const onSubmit = (value) => {
-      if (!variant) {
+      console.log('hello')
+
+      if (variant === 'createOrUpdate') {
          dispatch(
             changePasswordQuery({
                userData: {
                   newPassword: value.newPassword,
-                  email: email || emailFromStorage,
-                  hasPassword: !email,
+                  email: email || emailFromStore,
+                  variant,
                },
                navigate,
                handleClose,
@@ -65,10 +69,9 @@ export const ChangePassword = ({ variant, handleClose }) => {
                userData: {
                   oldPassword: value.oldPassword,
                   newPassword: value.newPassword,
-                  email: emailFromStorage,
-                  hasPassword: variant,
+                  email: emailFromStore,
                },
-               onClose: closeModalHandler,
+               handleClose: closeModalHandler,
             })
          )
       }
@@ -103,10 +106,14 @@ export const ChangePassword = ({ variant, handleClose }) => {
                onSubmit={handleSubmit(onSubmit)}
             >
                <FormTitleAndCloseIcon>
-                  <FormTitle variant="h4">Сыр сөздү өзгөртүү</FormTitle>
+                  <FormTitle variant="h4">
+                     {hasPassword
+                        ? 'Сыр сөздү өзгөртүү'
+                        : 'Жаңы сыр сөз киргизүү'}
+                  </FormTitle>
                   <StyledCloseModalIcon onClick={closeModalHandler} />
                </FormTitleAndCloseIcon>
-               {variant && (
+               {hasPassword && variant && (
                   <Input
                      type={
                         visibleAndInvisiblePasswordsState.oldPassword

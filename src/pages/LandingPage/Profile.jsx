@@ -13,7 +13,7 @@ const changeOrCreatePassword = (onClick, hasPassword) => {
       <StyledButton onClick={onClick} variant="outlined">
          {hasPassword === 'change'
             ? 'Сыр сөздү өзгөртүү'
-            : 'Жаңы сыр жөз киргизүү'}
+            : 'Жаңы сыр сөз киргизүү'}
       </StyledButton>
    )
 }

@@ -80,7 +80,7 @@ export const forgotPasswordQuery = createAsyncThunk(
 export const changePasswordQuery = createAsyncThunk(
    'authorization/change-password',
    async (
-      { userData, navigate, hasPassword, handleClose },
+      { userData, navigate, variant, handleClose },
       { rejectWithValue }
    ) => {
       try {
@@ -92,7 +92,7 @@ export const changePasswordQuery = createAsyncThunk(
             'Ошибка',
             axiosInstance.put('/auth/changePassword', userData)
          )
-         if (hasPassword) handleClose()
+         if (variant === 'createOrUpdate') return handleClose()
          return navigate('/main-page/login')
       } catch (error) {
          return rejectWithValue(error)

@@ -21,7 +21,7 @@ export const ChangePassword = ({ variant, handleClose, hasPassword }) => {
       formState: { errors },
    } = useForm({
       resolver: yupResolver(
-         variant
+         hasPassword && variant
             ? changePasswordValidationSchema
             : resetPasswordValidationSchema
       ),
@@ -37,7 +37,6 @@ export const ChangePassword = ({ variant, handleClose, hasPassword }) => {
       useState(true)
 
    const closeModalHandler = () => {
-      console.log('closeModalHandler')
       if (variant !== 'createOrUpdate') {
          navigate('/main-page')
       }
@@ -46,12 +45,12 @@ export const ChangePassword = ({ variant, handleClose, hasPassword }) => {
    }
 
    const emailFromStore = useSelector((state) => state.authLogin.email)
-   console.log(variant)
-   console.log(hasPassword)
-   const onSubmit = (value) => {
-      console.log('hello')
 
-      if (variant === 'createOrUpdate') {
+   const onSubmit = (value) => {
+      if (
+         (variant === 'createOrUpdate' && email) ||
+         (variant === 'createOrUpdate' && !hasPassword)
+      ) {
          dispatch(
             changePasswordQuery({
                userData: {
@@ -59,7 +58,6 @@ export const ChangePassword = ({ variant, handleClose, hasPassword }) => {
                   email: email || emailFromStore,
                   variant,
                },
-               navigate,
                handleClose,
             })
          )

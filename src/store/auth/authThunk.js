@@ -79,10 +79,7 @@ export const forgotPasswordQuery = createAsyncThunk(
 
 export const changePasswordQuery = createAsyncThunk(
    'authorization/change-password',
-   async (
-      { userData, navigate, variant, handleClose },
-      { rejectWithValue }
-   ) => {
+   async ({ userData, handleClose }, { rejectWithValue }) => {
       try {
          await toastWithPromise(
             notifyTypes.NOTIFY_TYPE_ERROR_ERROR,
@@ -92,8 +89,7 @@ export const changePasswordQuery = createAsyncThunk(
             'Ошибка',
             axiosInstance.put('/auth/changePassword', userData)
          )
-         if (variant === 'createOrUpdate') return handleClose()
-         return navigate('/main-page/login')
+         return handleClose()
       } catch (error) {
          return rejectWithValue(error)
       }

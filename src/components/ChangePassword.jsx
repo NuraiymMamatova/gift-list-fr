@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Box, Typography, styled } from '@mui/material'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { CloseModalIcon, EyeClose, EyeOpen } from '../assets'
 import { changePasswordQuery } from '../store/auth/authThunk'
@@ -13,16 +13,15 @@ import {
 import { Modal } from './Modal'
 import { Button } from './UI/Button'
 import { Input } from './UI/input/Input'
-import { changePasswordThunk } from '../store/profile/profileThunk'
 
-export const ChangePassword = ({ variant, handleClose }) => {
+export const ChangePassword = ({ variant, handleClose, hasPassword }) => {
    const {
       register,
       handleSubmit,
       formState: { errors },
    } = useForm({
       resolver: yupResolver(
-         variant
+         hasPassword && variant
             ? changePasswordValidationSchema
             : resetPasswordValidationSchema
       ),
@@ -38,33 +37,39 @@ export const ChangePassword = ({ variant, handleClose }) => {
       useState(true)
 
    const closeModalHandler = () => {
-      if (!variant) {
+      if (variant !== 'createOrUpdate') {
          navigate('/main-page')
       }
       setIsResetPasswordModalOpen(false)
       if (handleClose) handleClose()
    }
 
+   const emailFromStore = useSelector((state) => state.authLogin.email)
+
    const onSubmit = (value) => {
-      if (!variant) {
+      if (
+         (variant === 'createOrUpdate' && email) ||
+         (variant === 'createOrUpdate' && !hasPassword)
+      ) {
          dispatch(
             changePasswordQuery({
                userData: {
                   newPassword: value.newPassword,
-                  email,
+                  email: email || emailFromStore,
+                  variant,
                },
-               navigate,
+               handleClose,
             })
          )
       } else {
          dispatch(
-            changePasswordThunk({
+            changePasswordQuery({
                userData: {
                   oldPassword: value.oldPassword,
                   newPassword: value.newPassword,
-                  email,
+                  email: emailFromStore,
                },
-               onClose: closeModalHandler,
+               handleClose: closeModalHandler,
             })
          )
       }
@@ -99,17 +104,21 @@ export const ChangePassword = ({ variant, handleClose }) => {
                onSubmit={handleSubmit(onSubmit)}
             >
                <FormTitleAndCloseIcon>
-                  <FormTitle variant="h4">Смена пароля</FormTitle>
+                  <FormTitle variant="h4">
+                     {hasPassword
+                        ? 'Сыр сөздү өзгөртүү'
+                        : 'Жаңы сыр сөз киргизүү'}
+                  </FormTitle>
                   <StyledCloseModalIcon onClick={closeModalHandler} />
                </FormTitleAndCloseIcon>
-               {variant && (
+               {hasPassword && variant && (
                   <Input
                      type={
                         visibleAndInvisiblePasswordsState.oldPassword
                            ? 'text'
                            : 'password'
                      }
-                     placeholder="Введите старый пароль"
+                     placeholder="Эски сыр сөзүңүздү киргизиңиз                                                                                                            "
                      {...register('oldPassword')}
                      helperText={errors.oldPassword?.message}
                      error={Boolean(errors.oldPassword)}
@@ -141,7 +150,7 @@ export const ChangePassword = ({ variant, handleClose }) => {
                         ? 'text'
                         : 'password'
                   }
-                  placeholder="Введите новый пароль"
+                  placeholder="Жаңы сыр сөзүңүздү киргизиңиз"
                   {...register('newPassword')}
                   helperText={errors.newPassword?.message}
                   error={Boolean(errors.newPassword)}
@@ -172,7 +181,7 @@ export const ChangePassword = ({ variant, handleClose }) => {
                         ? 'text'
                         : 'password'
                   }
-                  placeholder="Повторите пароль"
+                  placeholder="Жаңы сыр сөзүңүздү кайталап киргизиңиз"
                   {...register('confirmPassword')}
                   helperText={errors.confirmPassword?.message}
                   error={Boolean(errors.confirmPassword)}
@@ -198,7 +207,7 @@ export const ChangePassword = ({ variant, handleClose }) => {
                   }}
                />
                <StyledConfirmButton variant="primary" type="submit">
-                  Подтвердить
+                  Тастыктоо
                </StyledConfirmButton>
             </ResetPasswordForm>
          </MainContainer>

@@ -82,25 +82,6 @@ export const updateProfileThunk = createAsyncThunk(
    }
 )
 
-export const changePasswordThunk = createAsyncThunk(
-   '/profile/changePasswordThunk',
-   async ({ userData, onClose }, { rejectWithValue }) => {
-      try {
-         await toastWithPromise(
-            notifyTypes.NOTIFY_TYPE_ERROR_WARNING,
-            notifyTypes.NOTIFY_TYPE_SUCCESS_INFO,
-            'Успешно',
-            'Пароль обновлен',
-            'Ошибка',
-            axiosInstance.put('/user/changePassword', userData)
-         )
-         onClose()
-      } catch (error) {
-         rejectWithValue(error)
-      }
-   }
-)
-
 export const getProfileByUserId = createAsyncThunk(
    'user/friends/:friendId',
    async (friendId, { rejectWithValue }) => {

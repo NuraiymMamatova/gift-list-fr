@@ -44,6 +44,7 @@ export const UserProfilePage = () => {
             birthdate={
                profile.dateOfBirth && convertDateFormat(profile.dateOfBirth)
             }
+            hasPassword={profile.hasPassword}
             clothSize={profile.clothingSize}
             email={profile.email}
             city={englishCountries[profile.country]}
@@ -61,7 +62,11 @@ export const UserProfilePage = () => {
             onClickSecondButton={toggleEditPasswordModalOpen}
          />
          {isEditPasswordModalOpen && (
-            <ChangePassword variant handleClose={toggleEditPasswordModalOpen} />
+            <ChangePassword
+               hasPassword={profile.hasPassword}
+               variant="createOrUpdate"
+               handleClose={toggleEditPasswordModalOpen}
+            />
          )}
       </div>
    )

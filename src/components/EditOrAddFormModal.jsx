@@ -20,8 +20,8 @@ export const EditOrAddFormModal = ({
    const { register, handleSubmit, control, getValues } = useForm({
       defaultValues: {
          ...addNewHolidayModalState.defaultValues,
-         dateOfHoliday: addNewHolidayModalState.defaultValues?.dateOfHoliday
-            ? dayjs(addNewHolidayModalState.defaultValues.dateOfHoliday)
+         holidayDate: addNewHolidayModalState.defaultValues?.holidayDate
+            ? dayjs(addNewHolidayModalState.defaultValues.holidayDate)
             : null,
       },
    })
@@ -108,7 +108,7 @@ export const EditOrAddFormModal = ({
                </StyledUploadImageWrapper>
                <Input
                   type="text"
-                  {...register(variant ? 'nameMailing' : 'nameHoliday')}
+                  {...register(variant ? 'nameMailing' : 'holidayName')}
                   labelText={variant ? 'Тема' : 'Название праздника'}
                   placeholder={
                      variant
@@ -125,7 +125,7 @@ export const EditOrAddFormModal = ({
                   />
                ) : (
                   <DatePicker
-                     name="dateOfHoliday"
+                     name="holidayDate"
                      label="Дата праздника"
                      placeholder="Укажите дату праздника"
                      control={control}
@@ -143,9 +143,9 @@ export const EditOrAddFormModal = ({
                   </StyledHolidayButton>
                   <StyledHolidayButton
                      onClick={() => {
-                        const { dateOfHoliday } = getValues()
+                        const { holidayDate } = getValues()
                         let errorMessage = null
-                        if (!dateOfHoliday) {
+                        if (!holidayDate) {
                            errorMessage = 'Укажите дату праздника!'
                         }
                         setDatePickerError((prev) => ({

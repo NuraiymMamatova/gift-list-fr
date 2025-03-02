@@ -1,3 +1,4 @@
+import axios from 'axios'
 import dayjs from 'dayjs'
 import {
    Aida,
@@ -7,7 +8,6 @@ import {
    Ellipse,
    SamatOkenov,
 } from '../../assets'
-import { axiosInstanceMultiPartFormData } from '../../config/axiosInstanceWithMultipartFormDataType'
 import { notifyTypes, toastWithoutPromise } from './toast'
 
 export const notifications = [
@@ -78,12 +78,17 @@ export const formatDate = (date) => {
 export const uploadFile = async (file) => {
    try {
       const formData = new FormData()
-      formData.set('file', file)
-      const response = await axiosInstanceMultiPartFormData.post(
-         '/storages/upload',
+      formData.append('file', file)
+      formData.append(
+         'upload_preset',
+         process.env.REACT_APP_CLOUDINARY_PRESET_NAME
+      )
+      formData.append('api_key', process.env.REACT_APP_CLOUDINARY_API_KEY)
+      const result = await axios.post(
+         `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_NAME}/image/upload`,
          formData
       )
-      return response.data
+      return result.data?.url
    } catch (error) {
       toastWithoutPromise(
          notifyTypes.NOTIFY_TYPE_ERROR_ERROR,

@@ -10,9 +10,9 @@ import {
 } from '@mui/material'
 import React from 'react'
 import { globalTheme } from '../../../theme/globalTheme'
+import { convertDateFormat } from '../../../utils/constants/formatedDate'
 import { MeatBalls } from '../MeatBalls'
 import { CardDescription } from './CardDescription'
-import { convertDateFormat } from '../../../utils/constants/formatedDate'
 
 // variants:
 // primary, secondary, tertiary, quaternary,
@@ -275,6 +275,7 @@ const StyledTypography = styled(Typography)({
 const StyledCardContent = styled(CardContent)(({ isblock }) => ({
    padding: '0',
    img: {
+      height: '9.5625rem',
       maxHeight: '9.5625rem',
       borderRadius: '7px',
       filter: isblock ? 'blur(1px)' : 'blur(0px)',

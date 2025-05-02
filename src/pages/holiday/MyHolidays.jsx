@@ -63,16 +63,16 @@ export const MyHolidays = () => {
       let image = preview.url
       if (preview.file) {
          const response = await uploadFile(preview.file)
-         image = response.link
+         image = response
       }
       if (type === 'save') {
          dispatch(
             addHolidayQuery({
                userData: {
-                  nameHoliday: values.nameHoliday,
-                  dateOfHoliday: formatDate(values.dateOfHoliday),
+                  holidayName: values.holidayName,
+                  holidayDate: formatDate(values.holidayDate),
+                  holidayImageUrl: image,
                },
-               image,
                userId: id,
             })
          )
@@ -81,10 +81,10 @@ export const MyHolidays = () => {
             updateHolidayQuery({
                holidayId,
                userData: {
-                  nameHoliday: values.nameHoliday,
-                  dateOfHoliday: formatDate(values.dateOfHoliday),
+                  holidayName: values.holidayName,
+                  holidayDate: formatDate(values.holidayDate),
+                  holidayImageUrl: image,
                },
-               image,
                userId: id,
             })
          )
@@ -111,24 +111,24 @@ export const MyHolidays = () => {
                <Card
                   key={holiday.holidayId}
                   variant="tertiary"
-                  holiday={holiday.nameHoliday}
-                  date={convertDateFormat(holiday.dateOfHoliday)}
-                  cardImage={holiday.image}
+                  holiday={holiday.holidayName}
+                  date={convertDateFormat(holiday.holidayDate)}
+                  cardImage={holiday.holidayImageUrl}
                   meatballsOptions={meatballsDeleteAndEditOptions}
                   onGetThingById={() =>
-                     onGetHolidayById(holiday.holidayId, holiday.nameHoliday)
+                     onGetHolidayById(holiday.holidayId, holiday.holidayName)
                   }
                   handleChange={(event) => {
                      switch (event.target.innerText) {
                         case 'Редактировать':
                            setPreview({
                               file: null,
-                              url: holiday.image,
+                              url: holiday.holidayImageUrl,
                            })
                            openAndCloseHolidayModalHandler(
                               {
-                                 nameHoliday: holiday.nameHoliday,
-                                 dateOfHoliday: holiday.dateOfHoliday,
+                                 holidayName: holiday.holidayName,
+                                 holidayDate: holiday.holidayDate,
                               },
                               holiday.holidayId
                            )

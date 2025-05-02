@@ -13,9 +13,9 @@ export const HolidaysPage = ({ isList }) => {
                <Card
                   variant="tertiary"
                   key={holiday.holidayId}
-                  date={holiday.dateOfHoliday}
-                  cardImage={holiday.image}
-                  holiday={holiday.nameHoliday}
+                  date={holiday.holidayDate}
+                  cardImage={holiday.holidayImageUrl}
+                  holiday={holiday.holidayName}
                   ownerName={holiday.fullName}
                   ownerImage={holiday.friendImage}
                   list={isList}

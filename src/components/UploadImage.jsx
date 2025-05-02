@@ -19,7 +19,10 @@ export const UploadImage = ({
       }
       file.readAsDataURL(acceptedFiles[0])
    }, [])
-   const { getRootProps, getInputProps } = useDropzone({ onDrop })
+   const { getRootProps, getInputProps } = useDropzone({
+      onDrop,
+   })
+
    return (
       <StyledContainer {...getRootProps()} className={error && 'error'}>
          <input {...getInputProps()} />
